@@ -3,13 +3,17 @@ const app = express();
 const port = 3001;
 const path = require('path');
 
-/* express.static() -> espera um caminho absoluto para um diretório (pasta) onde os arquivos arqui-
-vos estáticos serão servidos.
+/* express.static() -> espera um caminho absoluto para um diretório (pasta) onde os arquivos
+estáticos serão servidos.
 path.join() -> constrói o caminho absoluto.
 */
 app.use(express.static(path.join(__dirname, 'views')));
 
-// app.use(express.urlencoded());
+/*
+express.urlencoded({extended: true}) -> permite buscar os parâmetros do corpo da página html, como
+o req.body.nome, req.body.email etc.
+*/
+app.use(express.urlencoded({extended: true}));
 
 // GET requests
 /*
@@ -43,6 +47,34 @@ app.get("/sugestao", (req, res) => {
                 <p><strong>Ingredientes: </strong> ${ingredientes}</p>
                 <a href='/'>Voltar para o início</a>
             </body>
+            </html>
+        `);
+});
+
+// POST requests
+app.post("/contato", (req, res) => {
+    let name = req.body.nome;
+    let email = req.body.email;
+    let assunto = req.body.assunto;
+    let msg = req.body.mensagem;
+    res.send(`
+            <!DOCTYPE html>
+            <html lang="pt-br">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Contato recebido</title>
+            </head>
+            <body>
+                <p>Contato recebido! Obrigado!</p>
+                <p><strong>Nome: </strong>${name}</p>
+                <p><strong>E-mail: </strong>${email}</p>
+                <p><strong>Assunto: </strong>${assunto}</p>
+                <p><strong>Mensagem: </strong>${msg}</p>
+                <a href='/'>Voltar para o início</a>
+            </body>
+            </html>
         `);
 });
 
