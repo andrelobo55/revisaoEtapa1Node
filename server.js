@@ -9,6 +9,8 @@ path.join() -> constrói o caminho absoluto.
 */
 app.use(express.static(path.join(__dirname, 'views')));
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 /*
 express.urlencoded({extended: true}) -> permite buscar os parâmetros do corpo da página html, como
 o req.body.nome, req.body.email etc.
@@ -49,6 +51,10 @@ app.get("/sugestao", (req, res) => {
             </body>
             </html>
         `);
+});
+
+app.get('/api/lanches', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'data','lanches.json'));
 });
 
 // POST requests
